@@ -4,7 +4,7 @@
 using namespace std ;
 
 class Solution {
-    //
+    // TLE: 
 public:
     vector<vector<int>> findSubsequences(vector<int>& nums) {
         vector<vector<int>> ans;
@@ -16,6 +16,21 @@ public:
     void solve(vector<vector<int>> &ans, vector<int> &nums, vector<int> &temp, int i = 0) {
         if (i >= nums.size()) {
             if (temp.size() > 1) {
+                sort(temp.begin(), temp.end());
+                for(auto it: ans){
+                    if (it.size() == temp.size()){
+                        int flag = 1;
+                        for (int i = 0; i < temp.size(); ++i)
+                        {
+                            if (temp[i] != it[i]) 
+                            {
+                                flag = 0; 
+                                break;
+                            }
+                        }
+                        if (flag) return;
+                    }
+                }
                 ans.emplace_back(temp);
             }
             return;
@@ -34,7 +49,6 @@ public:
 
 class Solution {
     // Wrong answer : Since the elements of nums are not distinct, the subsequences are repeated. 
-    
 public:
     vector<vector<int>> findSubsequences(vector<int>& nums) {
         vector<vector<int>> ans;
