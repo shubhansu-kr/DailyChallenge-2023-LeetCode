@@ -4,6 +4,64 @@
 using namespace std ;
 
 class Solution {
+    // Runtime error: Stoi cannot convert any string having more than 10 digits.
+public:
+    bool isValidIP(string &ip){
+        vector<string> sub;
+        string temp = "";
+        for(auto &it: ip){
+            if (it == '.'){
+                if (temp == "") return false;
+                sub.emplace_back(temp);
+                temp = "";
+                continue;
+            }
+            temp += it;
+        }
+        if (temp == "") return false;
+        sub.emplace_back(temp);
+        if (sub.size() != 4) return false;
+        for(auto &it: sub){
+            // check for each subdom. 
+
+            // range 0 to 255
+            int i = stoi(it);
+            if (i < 0 || i > 255) return false;
+
+            // check for leading zeroes. 
+            if (i > 0 && it[0] == '0') return false;
+            if (i == 0  && it.size() != 1) return false;
+        }
+        return true;
+    }
+
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> ans;
+        string sub;
+        solve(ans, s, sub);
+        return ans;
+    }
+
+    void solve(vector<string> &ans, string &s, string sub, int count = 0, int i = 0) {
+        if(count == 4 || i >= s.size()) {
+            // cout << sub << endl;
+            if (isValidIP(sub)) ans.emplace_back(sub);
+            return;
+        }
+
+        sub.push_back(s[i]);
+
+        // Put Dot 
+        sub.push_back('.');
+        solve(ans, s, sub, count+1, i+1);
+        sub.pop_back();
+
+        // Don't Put Dot
+        solve(ans, s, sub, count, i+1);
+    }
+};
+
+class Solution {
     // WA
 public:
     bool isValidIP(string &ip){
@@ -44,7 +102,7 @@ public:
 
     void solve(vector<string> &ans, string &s, string &sub, int count = 0, int i = 0) {
         if(count == 4 || i >= s.size()) {
-            cout << sub << endl;
+            // cout << sub << endl;
             if (isValidIP(sub)) ans.emplace_back(sub);
             return;
         }
@@ -71,6 +129,10 @@ int main () {
 
     string s = "25525511135";
     vector<string> ans = Obj1.restoreIpAddresses(s);
+
+    for(auto &it: ans){
+        cout << it << endl;
+    }
 
     return 0;
 }
