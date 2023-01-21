@@ -4,6 +4,64 @@
 using namespace std ;
 
 class Solution {
+
+public:
+    bool isValidIP(string &ip){
+        vector<string> sub;
+        string temp = "";
+        for(auto &it: ip){
+            if (it == '.'){
+                if (temp == "") return false;
+                sub.emplace_back(temp);
+                temp = "";
+                continue;
+            }
+            temp += it;
+        }
+        if (temp == "") return false;
+        sub.emplace_back(temp);
+        if (sub.size() != 4) return false;
+        for(auto &it: sub){
+            // check for each subdom. 
+            if (it.size() > 4) return false;
+
+            // range 0 to 255
+            int i = stoi(it);
+            if (i < 0 || i > 255) return false;
+
+            // check for leading zeroes. 
+            if (i > 0 && it[0] == '0') return false;
+            if (i == 0  && it.size() != 1) return false;
+        }
+        return true;
+    }
+
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> ans;
+        string sub;
+        solve(ans, s, sub);
+        return ans;
+    }
+
+    void solve(vector<string> &ans, string &s, string sub, int count = 0, int i = 0) {
+        if(count == 4 || i >= s.size()) {
+            // cout << sub << endl;
+            if (isValidIP(sub)) ans.emplace_back(sub);
+            return;
+        }
+
+        sub.push_back(s[i]);
+
+        // Put Dot 
+        sub.push_back('.');
+        solve(ans, s, sub, count+1, i+1);
+        sub.pop_back();
+
+        // Don't Put Dot
+        solve(ans, s, sub, count, i+1);
+    }
+};
+class Solution0 {
     // Runtime error: Stoi cannot convert any string having more than 10 digits.
 public:
     bool isValidIP(string &ip){
@@ -61,7 +119,7 @@ public:
     }
 };
 
-class Solution {
+class Solution0 {
     // WA
 public:
     bool isValidIP(string &ip){
