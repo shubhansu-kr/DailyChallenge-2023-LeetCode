@@ -18,7 +18,7 @@ public:
         vector<vector<string>> ans;
         vector<string> sub;
         solve(ans, sub, s);
-        return;
+        return ans;
     }
 
     void solve(vector<vector<string>> &ans, vector<string> &sub, string &s, int i = 0){
