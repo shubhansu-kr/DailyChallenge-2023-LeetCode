@@ -87,13 +87,7 @@ public:
                         pre = q;
                         q = q->next;
                     }
-
-                     
-                     
                 }
-
-                
-
 
                 p->counter++;
                 return p->val;
