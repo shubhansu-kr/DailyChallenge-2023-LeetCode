@@ -3,6 +3,27 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+class Solution3 {
+    // Tabulation: Space Optimisation
+public:
+    int tribonacci(int n) {
+        if (n < 3) return n != 0;
+        int prev0 = 0, prev1 = 1, prev2 =1;
+
+        for (int i = 3; i < n+1; ++i)
+        {
+            int temp;
+            temp = prev0+prev1+prev2;
+
+            prev0 = prev1;
+            prev1 = prev2;
+            prev2 = temp;
+        }
+
+        return prev2;
+    }
+};
+
 class Solution2 {
     // Tabulation
 public:
