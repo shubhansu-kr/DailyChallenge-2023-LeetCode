@@ -14,6 +14,31 @@ struct TreeNode {
 
 
 class Solution {
+    // PreOrder Traversal Technique. 
+public:
+    int minDiffInBST(TreeNode* root) {
+        vector<int> traversal;
+        preOrder(traversal, root);
+
+        int minDiff = INT_MAX;
+        for (int i = 1; i < traversal.size(); ++i)
+        {
+            minDiff = min(traversal[i]-traversal[i-1], minDiff);
+        }
+        
+        return minDiff;
+    }
+
+    void preOrder(vector<int> &tr, TreeNode *root) {
+        if (!root) return;
+
+        preOrder(tr, root->left);
+        tr.emplace_back(root->val);
+        preOrder(tr, root->right);
+    }
+};
+
+class Solution {
     // WA :  [90,69,null,49,89,null,52]
     // Expected: 1 
     // Output: 3
