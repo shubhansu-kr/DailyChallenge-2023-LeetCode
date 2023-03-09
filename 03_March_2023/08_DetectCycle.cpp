@@ -12,6 +12,14 @@ struct ListNode {
 };
 
 class Solution1 {
+    // Slow-Fast Pointer: WA  
+public:
+    ListNode *detectCycle(ListNode *head) {
+        
+    }
+};
+
+class Solution1 {
     // Slow-Fast Pointer: WA 
 public:
     ListNode *detectCycle(ListNode *head) {
