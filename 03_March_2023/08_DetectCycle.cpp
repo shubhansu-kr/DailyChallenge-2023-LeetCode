@@ -11,8 +11,30 @@ struct ListNode {
     ListNode(int val, ListNode *next):val(val), next(next){}
 };
 
+class Solution1 {
+    // Slow-Fast Pointer: WA 
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(!head) return head;
+        
+        ListNode *slow = head, *fast = head->next;
+
+        // It guarantees the detection of cycle, but does not guarantees 
+        // the detection at very first node.
+
+        while(fast && fast->next) {
+            if(fast == slow) return slow;
+
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return nullptr;
+    }
+};
+
 class Solution {
-    // BruteForce: Use set to find the repetive node
+    // BruteForce: Use set to find the repetitive node
 public:
     ListNode *detectCycle(ListNode *head) {
         unordered_set<ListNode *> _set;
