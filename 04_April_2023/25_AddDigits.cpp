@@ -3,6 +3,13 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+class Solution1 {
+public:
+    int addDigits(int num) {
+        return 1 + (num - 1) % 9;
+    }
+};
+
 class Solution {
 public:
     int addDigits(int num) {
