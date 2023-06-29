@@ -1,58 +1,74 @@
-#include <iostream>
-#include <vector>
+//
 
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> findSequence(int n) {
-    vector<int> sequence;
-    vector<int> result;
+long getNumberOfDroppedPackets(vector<vector<int>> requests, int maxPacket, int rate)
+{
+    long dropped = 0, current = 0;
 
-    // Create the initial sequence [1, 2, 3, ..., n-1]
-    for (int i = 1; i < n; i++) {
-        sequence.push_back(i);
+    // Sort for time.
+    sort(requests.begin(), requests.end(), [](vector<int> v1, vector<int> v2)
+         { return v1[0] < v2[0]; });
+
+    current = requests[0][1];
+
+    if (current > maxPacket)
+    {
+        dropped += current - maxPacket;
+        current = maxPacket;
     }
 
-    // Calculate the product of the sequence modulo n
-    int product = 1;
-    for (int i = 0; i < sequence.size(); i++) {
-        product = (product * sequence[i]) % n;
-    }
+    for (int i = 1; i < requests.size(); ++i)
+    {
+        int t = requests[i][0] - requests[i - 1][0];
 
-    // If the product is already congruent to 1 modulo n, return an empty result
-    if (product == 1) {
-        return result;
-    }
+        // deliver package
+        current = max(0, (int)(current - t * rate));
 
-    // Find the factors of (n - 1) and remove them from the sequence
-    for (int i = 2; i * i <= n - 1; i++) {
-        if ((n - 1) % i == 0) {
-            result.push_back(i);
-            while ((n - 1) % i == 0) {
-                (n - 1) /= i;
-            }
+        current += requests[i][1];
+        if (current > maxPacket)
+        {
+            dropped += current - maxPacket;
+            current = maxPacket;
         }
     }
 
-    // If (n - 1) is not 1, it is a prime factor greater than sqrt(n-1)
-    if (n - 1 > 1) {
-        result.push_back(n - 1);
-    }
-
-    return result;
+    return dropped;
 }
 
-int main() {
-    int n;
-    cout << "Enter the value of n: ";
-    cin >> n;
+int getMaxPoints(vector<int> markers)
+{
+    int i = 0, j = markers.size() - 1;
 
-    vector<int> result = findSequence(n);
+    vector<vector<vector<int>>> dp(markers.size() + 1, vector<vector<int>>(markers.size() + 1, vector<int>(2, -1)));
+    return solve(dp, markers, i, j, 1);
+}
 
-    cout << "Elements to remove: ";
-    for (int i = 0; i < result.size(); i++) {
-        cout << result[i] << " ";
+int solve(vector<vector<vector<int>>> &dp, vector<int> &markers, int i, int j, int turn)
+{
+    if (i >= j)
+        return 0;
+
+    if (dp[i][j][turn] != -1)
+        return dp[i][j][turn];
+    int left = 0, right = 0;
+    if (turn)
+    {
+        left = markers[i] + solve(dp, markers, i + 1, j, 0);
+        right = markers[j] + solve(dp, markers, i, j - 1, 0);
     }
-    cout << endl;
+    else
+    {
+        left = solve(dp, markers, i + 1, j, 1);
+        right = solve(dp, markers, i, j - 1, 1);
+    }
+
+    return dp[i][j][turn] = max(left, right);
+}
+
+int main()
+{
 
     return 0;
 }
