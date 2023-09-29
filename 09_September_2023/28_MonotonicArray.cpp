@@ -3,11 +3,27 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+
+
 class Solution {
-    // WA
+    // RE: Integer Overflow
 public:
     bool isMonotonic(vector<int>& nums) {
-        
+        int n = nums.size();
+
+        if (n < 2) return true;
+        int i = 1;
+        while(i < n && nums[i] == nums[i-1]) ++i;
+        if (i == n) return true;
+        int slope = nums[i] - nums[i-1]; // +ve | -ve
+        while(i < n) {
+            if (nums[i] != nums[i-1]){
+                int sp = nums[i] - nums[i-1];
+                if (sp * slope < 0) return false;
+            }
+            ++i;
+        }
+        return true;
     }
 };
 
