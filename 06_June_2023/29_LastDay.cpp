@@ -18,7 +18,7 @@ public:
                 left = mid + 1; // Try to find a larger day
             }
             else
-                right = mid - 1; // Try to find a smaller day
+                right = mid - 1; //  Try to find a smaller day
         }
         return ans;
     }
